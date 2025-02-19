@@ -54,6 +54,7 @@ def transcribe():
         # Transcribe the audio
         transcription = transcribe_audio(audio_base64)
         
+        print("transcription",transcription)
         if "Error" in transcription:
             return jsonify({"error": transcription}), 500
 
