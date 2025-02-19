@@ -42,22 +42,24 @@ def health():
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
-    # Get the base64 audio data from the POST request
-    print("here")
-    data = request.json
-    print(data)
-    if not data or 'audio_base64' not in data:
-        return jsonify({"error": "Missing audio_base64 in request"}), 400
+    try:
+        # Get the base64 audio data from the POST request
+        print("here")
+        data = request.json
+        if not data or 'audio_base64' not in data:
+            return jsonify({"error": "Missing audio_base64 in request"}), 400
 
-    audio_base64 = data['audio_base64']
+        audio_base64 = data['audio_base64']
 
-    # Transcribe the audio
-    transcription = transcribe_audio(audio_base64)
-    
-    if "Error" in transcription:
-        return jsonify({"error": transcription}), 500
+        # Transcribe the audio
+        transcription = transcribe_audio(audio_base64)
+        
+        if "Error" in transcription:
+            return jsonify({"error": transcription}), 500
 
-    return jsonify({"transcription": transcription}), 200
+        return jsonify({"transcription": transcription}), 200
+    except Exception as e:
+        print("error",e)
 
 if __name__ == '__main__':
     app.run(debug=True)
